@@ -9,6 +9,7 @@ import colors from "../theme/colors.json";
 import { Octicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
 import marginAndPadding from "../theme/marginAndPadding.json";
+import { Circle, Svg } from "react-native-svg";
 
 export default function Home() {
   const barData = [
@@ -76,6 +77,44 @@ export default function Home() {
             }}
           />
         </View>
+        <View style={[styles.interact, styles.shadow]}>
+          <Svg
+            style={styles.interaction}
+            width={70}
+            height={70}
+            viewBox="0 0 70 70"
+            fill="none"
+          >
+            <Circle cx={35} cy={35} r={35} fill={"#CCCCCC"}></Circle>
+          </Svg>
+          <Svg
+            style={styles.interaction}
+            width={70}
+            height={70}
+            viewBox="0 0 70 70"
+            fill="none"
+          >
+            <Circle cx={35} cy={35} r={35} fill={"#CCCCCC"}></Circle>
+          </Svg>
+          <Svg
+            style={styles.interaction}
+            width={70}
+            height={70}
+            viewBox="0 0 70 70"
+            fill="none"
+          >
+            <Circle cx={35} cy={35} r={35} fill={"#CCCCCC"}></Circle>
+          </Svg>
+          <Svg
+            style={styles.interaction}
+            width={70}
+            height={70}
+            viewBox="0 0 70 70"
+            fill="none"
+          >
+            <Circle cx={35} cy={35} r={35} fill={"#CCCCCC"}></Circle>
+          </Svg>
+        </View>
       </View>
     </View>
   );
@@ -104,6 +143,21 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: marginAndPadding.mainBorderRadius,
     height: 300,
+  },
+  interact: {
+    backgroundColor: "#fff",
+    marginVertical: 15,
+    borderRadius: marginAndPadding.mainBorderRadius,
+    height: 100,
+    paddingVertical: 15,
+    paddingHorizontal: 7.5,
+    display: "flex",
+    alignContents: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  interaction: {
+    marginHorizontal: 7.5,
   },
   month: {
     backgroundColor: "#fff",

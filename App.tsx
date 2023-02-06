@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./src/pages/Home";
 import marginAndPadding from "./src/theme/marginAndPadding.json";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Tips from "./src/pages/Tips";
+import Target from "./src/pages/Target";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,8 +46,9 @@ function Tabs() {
             height: 70,
             bottom: 20,
             borderRadius: marginAndPadding.mainBorderRadius,
-            left: 20,
-            right: 20,
+            paddingHorizontal: 7,
+            left: 100,
+            right: 100,
             shadowColor: "#6dbe9b",
             shadowOffset: {
               width: 0,
@@ -60,11 +63,16 @@ function Tabs() {
             let octicons: "star" | "star-fill" | "error" = "error";
             let materialIcons: "lightbulb" | "lightbulb-outline" | "error" =
               "error";
-            let ionicons: "home" | "home-outline" | "error" = "error";
+            let ionicons:
+              | "home"
+              | "home-outline"
+              | "star-outline"
+              | "star"
+              | "error" = "error";
             if (route.name === "Home") {
               ionicons = focused ? "home" : "home-outline";
             } else if (route.name === "Target") {
-              octicons = focused ? "star-fill" : "star";
+              ionicons = focused ? "star" : "star-outline";
             } else if (route.name === "Tips") {
               materialIcons = focused ? "lightbulb" : "lightbulb-outline";
             }
@@ -84,7 +92,9 @@ function Tabs() {
           },
         })}
       >
+        <Tab.Screen name="Tips" component={Tips} />
         <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Target" component={Target} />
       </Tab.Navigator>
     </SafeAreaView>
   );
