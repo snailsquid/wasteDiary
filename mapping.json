@@ -1,8 +1,6 @@
 {
     "components" : {},
     "strict": {
-        "text-font-family": "Poppins",
-      "text-heading-1-font-size": 34,
-      "text-header-1-font-family": "Unbounded"
+      "text-subtitle-1-font-family": "Unbounded_Bold"
     }
   }
