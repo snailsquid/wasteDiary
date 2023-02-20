@@ -5,6 +5,7 @@ import {
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { openURL } from "expo-linking";
 import {
   Box,
   Text,
@@ -71,33 +72,46 @@ export default function Home({ navigation }: any) {
             <Text fontFamily="heading" fontWeight={"bold"} color="green.500">
               Waste Diary
             </Text>
-            <Box
+            <Pressable
               width={"100%"}
               height={"34%"}
-              backgroundColor="green.800"
-              rounded={20}
+              onPress={() =>
+                openURL(
+                  "https://www.nature.org/en-us/about-us/where-we-work/united-states/delaware/stories-in-delaware/delaware-eight-ways-to-reduce-waste/#:~:text=Eight%20Ways%20to%20Reduce%20Waste%201%201.%20Use,your%20use%20of%20paper%3A%20mail%2C%20receipts%2C%20magazines%20"
+                )
+              }
             >
-              <Image
-                alt="trash"
-                position={"absolute"}
-                size="xl"
-                rounded={20}
-                opacity={"50"}
-                width={"100%"}
-                height={"100%"}
-                source={{
-                  uri: "https://media.discordapp.net/attachments/913429508789534742/1076393077809352734/evgeny-karchevsky-k1tUxfs8JYY-unsplash.jpg?width=439&height=585",
-                }}
-              />
-              <Box flex={1} justifyContent={"flex-end"} p={5}>
-                <Text color={"white"} fontFamily="heading" fontSize={24}>
-                  Reducing Waste
-                </Text>
-                <Text color={"white"} fontFamily="heading" fontSize={24}>
-                  One Step At A Time
-                </Text>
-              </Box>
-            </Box>
+              {({ isPressed }) => (
+                <Box
+                  style={{ transform: [{ scale: isPressed ? 0.96 : 1 }] }}
+                  width={"100%"}
+                  height={"100%"}
+                  backgroundColor="green.800"
+                  rounded={20}
+                >
+                  <Image
+                    alt="trash"
+                    position={"absolute"}
+                    size="xl"
+                    rounded={20}
+                    opacity={isPressed ? "40" : "50"}
+                    width={"100%"}
+                    height={"100%"}
+                    source={{
+                      uri: "https://media.discordapp.net/attachments/913429508789534742/1076393077809352734/evgeny-karchevsky-k1tUxfs8JYY-unsplash.jpg?width=439&height=585",
+                    }}
+                  />
+                  <Box flex={1} justifyContent={"flex-end"} p={5}>
+                    <Text color={"white"} fontFamily="heading" fontSize={24}>
+                      Reducing Waste
+                    </Text>
+                    <Text color={"white"} fontFamily="heading" fontSize={24}>
+                      One Step At A Time
+                    </Text>
+                  </Box>
+                </Box>
+              )}
+            </Pressable>
             <HStack space={2}>
               <Box flex={1}>
                 <Popover
