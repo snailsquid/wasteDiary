@@ -13,12 +13,56 @@ import {
   HStack,
   Image,
   ScrollView,
+  Center,
+  Popover,
 } from "native-base";
 import Card from "../components/Card";
 import { LineChart } from "react-native-chart-kit";
 import { NavigationContainer } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
 
 export default function Home({ navigation }: any) {
+  const [points, setPoints] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [scoreList, setScoreList] = useState<any>([]);
+  const [msg, setMsg] = useState<string>("");
+
+  useEffect(() => {
+    const listener = navigation.addListener("focus", () => {
+      checkEntry();
+    });
+  }, [navigation]);
+
+  async function checkEntry() {
+    const diaryStorage = AsyncStorage.getItem("diary");
+    const diary = await diaryStorage.catch(console.error);
+    if (diary) {
+      const diary_ = JSON.parse(diary);
+      setPoints(diary_.score);
+      setStreak(diary_.streak);
+      const msgs: string[] = [
+        "😎 Let's Track Your Waste",
+        "🕑 Time To Track Your Waste",
+        "👀 Track Your Waste Daily",
+      ];
+      if (moment(diary_.lastEntry).diff(moment().format(), "days") < 1) {
+        setMsg("Today's been tracked 👍");
+      } else {
+        setMsg(msgs[Math.floor(Math.random() * (msgs.length + 1))]);
+      }
+      console.log(diary_.diary[diary_.diary.length - 1].score);
+      /* let scoreList_: any = [];
+      for (let i = 0; i < 7; i++) {
+        scoreList_
+          .push(diary_.diary[diary_.diary.length - i].score)
+      }
+      console.log(scoreList_);
+      setScoreList(scoreList_); */
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#DAFFED" }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -55,37 +99,63 @@ export default function Home({ navigation }: any) {
               </Box>
             </Box>
             <HStack space={2}>
-              <Card center>
-                <Text
-                  fontFamily={"heading"}
-                  fontSize={"2xl"}
-                  fontWeight={"bold"}
+              <Box flex={1}>
+                <Popover
+                  trigger={(triggerProps) => {
+                    return (
+                      <Pressable {...triggerProps} flex={1}>
+                        <Card center>
+                          <Text
+                            fontFamily={"heading"}
+                            fontSize={"2xl"}
+                            fontWeight={"bold"}
+                          >
+                            🔥{streak}
+                          </Text>
+                          <Text
+                            fontFamily={"body"}
+                            fontWeight={"semibold"}
+                            fontSize={"xs"}
+                          >
+                            Days Streak
+                          </Text>
+                        </Card>
+                      </Pressable>
+                    );
+                  }}
                 >
-                  🔥9
-                </Text>
-                <Text
-                  fontFamily={"body"}
-                  fontWeight={"semibold"}
-                  fontSize={"xs"}
-                >
-                  Days Streak
-                </Text>
-              </Card>
-              <Card center>
-                <Text
-                  fontFamily={"heading"}
-                  fontSize={"2xl"}
-                  fontWeight={"bold"}
-                >
-                  💎 900
-                </Text>
-                <Text
-                  alignItems={"center"}
-                  fontWeight={"semibold"}
-                  fontSize={"xs"}
-                >
-                  Waste Points
-                </Text>
+                  <Popover.Content accessibilityLabel="Days Streak">
+                    <Popover.Arrow />
+                    <Popover.Body>
+                      You've made it this far, Great Job!
+                    </Popover.Body>
+                  </Popover.Content>
+                </Popover>
+              </Box>
+
+              <Card>
+                <Pressable flex={1} onPress={() => navigation.navigate("Shop")}>
+                  {({ isPressed }) => (
+                    <Center
+                      style={{ transform: [{ scale: isPressed ? 0.9 : 1 }] }}
+                    >
+                      <Text
+                        fontFamily={"heading"}
+                        fontSize={"2xl"}
+                        fontWeight={"bold"}
+                      >
+                        💎 {points}
+                      </Text>
+                      <Text
+                        alignItems={"center"}
+                        fontWeight={"semibold"}
+                        fontSize={"xs"}
+                      >
+                        Waste Points
+                      </Text>
+                    </Center>
+                  )}
+                </Pressable>
               </Card>
             </HStack>
             <HStack>
@@ -96,7 +166,7 @@ export default function Home({ navigation }: any) {
                     fontFamily={"heading"}
                     fontWeight={"bold"}
                   >
-                    😎 Let's Track Your Waste
+                    {msg}
                   </Text>
                   <Pressable
                     flex={0}
@@ -146,15 +216,7 @@ export default function Home({ navigation }: any) {
                     ],
                     datasets: [
                       {
-                        data: [
-                          Math.random() * 100,
-                          Math.random() * 100,
-                          Math.random() * 100,
-                          Math.random() * 100,
-                          Math.random() * 100,
-                          Math.random() * 100,
-                          Math.random() * 100,
-                        ],
+                        data: [100, 100, 100, 100, 100, 100, 100],
                       },
                     ],
                   }}

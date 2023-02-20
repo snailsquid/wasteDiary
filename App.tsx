@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Entry from "./src/pages/Entry";
+import Shop from "./src/pages/Shop";
 
 const Tab = createNativeStackNavigator();
 
@@ -163,6 +164,7 @@ export default function App() {
               <Tab.Screen name="Home" component={Home} />
               <Tab.Screen name="Target" component={Target} />
               <Tab.Screen name="Entry" component={Entry} />
+              <Tab.Screen name="Shop" component={Shop} />
             </Tab.Navigator>
           </NavigationContainer>
         </NativeBaseProvider>
