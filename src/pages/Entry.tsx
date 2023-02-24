@@ -10,6 +10,10 @@ import {
   Input,
   Switch,
 } from "native-base";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import { SafeAreaView, Dimensions, StatusBar as StatBar } from "react-native";
 import moment from "moment";
 import Card from "../components/Card";
@@ -29,6 +33,7 @@ interface Diary {
   score: number;
   lastEntry: string;
   streak: number;
+  points: number;
 }
 
 export default function Entry({ navigation }: any) {
@@ -42,6 +47,7 @@ export default function Entry({ navigation }: any) {
       score: 0,
       lastEntry: moment().format(),
       streak: 0,
+      points: 0,
     };
     const diary = await AsyncStorage.getItem("diary");
     if (diary) {
@@ -64,10 +70,11 @@ export default function Entry({ navigation }: any) {
     } else {
       diary_.streak = 0;
     }
-    console.log(diary_.streak);
-    console.log(diary_.lastEntry);
     diary_.lastEntry = moment().format();
     diary_.score += score;
+    if (recycled) {
+      diary_.points += recycle;
+    }
     diary_.diary.push({
       recycle: recycle,
       nonRecycle: nonRecycle,
@@ -93,6 +100,9 @@ export default function Entry({ navigation }: any) {
         backgroundColor: "#DAFFED",
       }}
     >
+      <Animated.View
+        style={{ position: "absolute", flex: 1, backgroundColor: "#fff" }}
+      ></Animated.View>
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,

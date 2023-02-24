@@ -15,6 +15,7 @@ import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Entry from "./src/pages/Entry";
 import Shop from "./src/pages/Shop";
+import Intro from "./src/pages/Intro";
 
 const Tab = createNativeStackNavigator();
 
@@ -153,7 +154,7 @@ export default function App() {
         <NativeBaseProvider theme={theme}>
           <NavigationContainer>
             <Tab.Navigator
-              initialRouteName="Home"
+              initialRouteName="Intro"
               screenOptions={({ route, navigation }: any) => ({
                 headerShown: false,
                 tabBarActiveTintColor: "#1CB447",
@@ -165,6 +166,7 @@ export default function App() {
               <Tab.Screen name="Target" component={Target} />
               <Tab.Screen name="Entry" component={Entry} />
               <Tab.Screen name="Shop" component={Shop} />
+              <Tab.Screen name="Intro" component={Intro} />
             </Tab.Navigator>
           </NavigationContainer>
         </NativeBaseProvider>

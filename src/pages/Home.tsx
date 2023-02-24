@@ -40,8 +40,8 @@ export default function Home({ navigation }: any) {
     const diaryStorage = AsyncStorage.getItem("diary");
     const diary = await diaryStorage.catch(console.error);
     if (diary) {
-      const diary_ = JSON.parse(diary);
-      setPoints(diary_.score);
+      const diary_ = { ...JSON.parse(diary) };
+      setPoints(diary_.points);
       setStreak(diary_.streak);
       const msgs: string[] = [
         "😎 Let's Track Your Waste",
@@ -53,14 +53,11 @@ export default function Home({ navigation }: any) {
       } else {
         setMsg(msgs[Math.floor(Math.random() * (msgs.length + 1))]);
       }
-      console.log(diary_.diary[diary_.diary.length - 1].score);
-      /* let scoreList_: any = [];
+      let scoreList_: any = [];
       for (let i = 0; i < 7; i++) {
-        scoreList_
-          .push(diary_.diary[diary_.diary.length - i].score)
+        scoreList_.push(diary_.diary[diary_.diary.length - i - 1].score);
       }
-      console.log(scoreList_);
-      setScoreList(scoreList_); */
+      setScoreList(scoreList_);
     }
   }
 
@@ -74,7 +71,7 @@ export default function Home({ navigation }: any) {
             </Text>
             <Pressable
               width={"100%"}
-              height={"34%"}
+              height={"300"}
               onPress={() =>
                 openURL(
                   "https://www.nature.org/en-us/about-us/where-we-work/united-states/delaware/stories-in-delaware/delaware-eight-ways-to-reduce-waste/#:~:text=Eight%20Ways%20to%20Reduce%20Waste%201%201.%20Use,your%20use%20of%20paper%3A%20mail%2C%20receipts%2C%20magazines%20"
@@ -108,6 +105,9 @@ export default function Home({ navigation }: any) {
                     <Text color={"white"} fontFamily="heading" fontSize={24}>
                       One Step At A Time
                     </Text>
+                    <Text fontFamily={"body"} color={"green.200"} fontSize={12}>
+                      www.nature.org
+                    </Text>
                   </Box>
                 </Box>
               )}
@@ -117,31 +117,42 @@ export default function Home({ navigation }: any) {
                 <Popover
                   trigger={(triggerProps) => {
                     return (
-                      <Pressable {...triggerProps} flex={1}>
-                        <Card center>
-                          <Text
-                            fontFamily={"heading"}
-                            fontSize={"2xl"}
-                            fontWeight={"bold"}
-                          >
-                            🔥{streak}
-                          </Text>
+                      <Card center>
+                        <Pressable
+                          position={"absolute"}
+                          left={0}
+                          top={0}
+                          {...triggerProps}
+                        >
+                          <Text>ⓘ</Text>
+                        </Pressable>
+                        <Text
+                          fontFamily={"heading"}
+                          fontSize={"2xl"}
+                          fontWeight={"bold"}
+                        >
+                          🔥{streak}
+                        </Text>
+                        <HStack>
                           <Text
                             fontFamily={"body"}
                             fontWeight={"semibold"}
                             fontSize={"xs"}
                           >
-                            Days Streak
+                            Days Streak{" "}
                           </Text>
-                        </Card>
-                      </Pressable>
+                        </HStack>
+                      </Card>
                     );
                   }}
                 >
-                  <Popover.Content accessibilityLabel="Days Streak">
+                  <Popover.Content
+                    style={{ paddingTop: 2 }}
+                    accessibilityLabel="Days Streak"
+                  >
                     <Popover.Arrow />
                     <Popover.Body>
-                      You've made it this far, Great Job!
+                      Days You've made an entry in a row
                     </Popover.Body>
                   </Popover.Content>
                 </Popover>
@@ -230,7 +241,17 @@ export default function Home({ navigation }: any) {
                     ],
                     datasets: [
                       {
-                        data: [100, 100, 100, 100, 100, 100, 100],
+                        data: scoreList[0]
+                          ? [
+                              scoreList[6],
+                              scoreList[5],
+                              scoreList[4],
+                              scoreList[3],
+                              scoreList[2],
+                              scoreList[1],
+                              scoreList[0],
+                            ]
+                          : [100, 100, 100, 100, 100, 100, 100],
                       },
                     ],
                   }}
@@ -242,6 +263,40 @@ export default function Home({ navigation }: any) {
                 />
               </Card>
             </HStack>
+            <Box
+              width={"100%"}
+              backgroundColor={"white"}
+              rounded={20}
+              shadow={1}
+              flex={1}
+              alignItems={"center"}
+            >
+              <HStack>
+                <Center>
+                  <Text fontSize={"5xl"} p={5}>
+                    🚛
+                  </Text>
+                </Center>
+                <Center pb={2}>
+                  <VStack>
+                    <Text
+                      color="green.500"
+                      fontFamily={"heading"}
+                      fontWeight={"bold"}
+                    >
+                      We'll be picking up{" "}
+                    </Text>
+                    <Text
+                      color="green.500"
+                      fontFamily={"heading"}
+                      fontWeight={"bold"}
+                    >
+                      in 2 days
+                    </Text>
+                  </VStack>
+                </Center>
+              </HStack>
+            </Box>
           </VStack>
         </Box>
       </ScrollView>
